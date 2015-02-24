@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="restaurantFinder">
+  <head>
+    <meta charset="UTF-8">
+    <title>Restaurant Finder</title>
+    <script src="lib/angular.js"></script>
+    <script src="app.js"></script>
+    <script src="js/RestaurantsController.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+  </head>
+  <body>
+      <div class="container" ng-controller="RestaurantsCtrl">
+        <div class="row" ng-show="restaurants.length">
+          <div class="col-md-12">
+            <h4>Search Restaurants</h4>
+            <form class="form-inline" role="form">
+              <div class="form-group">
+              <input ng-model="query.name" type="text" class="form-control" id="restaurant-name" placeholder="Search by name">
+              <input ng-model="query.food" type="text" class="form-control" id="restaurant-food" placeholder="Search by food type">
+              <input type="radio" ng-model="query.price" class="form-control" name="no_price" value=""><label for="no_price">Price off</label>
+              <input type="radio" ng-model="query.price" class="form-control" name="price_cheap" value="1"><label for="price_cheap">$</label>
+              <input type="radio" ng-model="query.price" class="form-control" name="price_low" value="2"><label for="price_low">$$</label>
+              <input type="radio" ng-model="query.price" class="form-control" name="price_medium" value="3"><label for="price_medium">$$$</label>
+              <input type="radio" ng-model="query.price" class="form-control" name="price_high" value="4"><label for="price_high">$$$$</label>
+              <input type="checkbox" ng-model="query.internet" value ="internet" ng-false-value="''">Internet
+              <input type="checkbox" ng-model="query.cleanwater" value ="clean water" ng-false-value="''">Clean Water
+            </div>
+            </form>
+          </div>
+      </div>
+        <div class="row">
+          <div class="col-md-12">
+            <h2 ng-show="restaurants.length && filtered.length">Restaurant List</h2>
+            <h2 ng-show="restaurants.length && !filtered.length">No Matches</h2>
+            <ul>
+              <li ng-repeat="item in filtered = (restaurants | filter:query)">
+                <span ng-click="editing = true" ng-hide="editing">
+                {{item.name}} <a ng-click="deleteRestaurant(item)">Delete</a>
+                </span>
+              <span class="form-group" ng-show="editing" ng-submit="editing = false">
+                <form class="form-inline" role="form">
+                  <input type="text" class"form-control input-sm" ng-model="item.name" placeholder="Name" required/>
+                  <input type="text" class="form-control input-sm" ng-model="item.food" name="food_type" placeholder="type of food">
+                    <input type="radio" ng-model="item.price" class="form-control input-sm" name="price_cheap" value="1"><label for="price_cheap">$</label>
+                    <input type="radio" ng-model="item.price" class="form-control input-sm" name="price_low" value="2"><label for="price_low">$$</label>
+                    <input type="radio" ng-model="item.price" class="form-control input-sm" name="price_medium" value="3"><label for="price_medium">$$$</label>
+                    <input type="radio" ng-model="item.price" class="form-control input-sm" name="price_high" value="4"><label for="price_high">$$$$</label>
+                    <div class="row">
+                    <input type="checkbox" ng-model="item.internet" value="internet">Internet
+                    <input type="checkbox" ng-model="item.cleanwater" value="clean water">Clean Water
+                    </div>
+                  <button class="btn btn-default btn-sm" type="submit">Save</button>
+                </form>
+              </span>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h2>New Restaurants</h2>
+            <form ng-submit="addRestaurant()" class="form-line" role="form">
+              <div class="form-group">
+                <input type="text" ng-model="restaurantName" class="form-control" placeholder="Enter Restaurant">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
